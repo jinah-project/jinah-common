@@ -1,0 +1,14 @@
+*.class
+.classpath
+.settings
+.project
+.clover
+.externalToolBuilders
+.codepro
+
+target
+
+# Package Files #
+*.jar
+*.war
+*.ear
