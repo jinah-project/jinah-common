@@ -237,4 +237,44 @@ public class Strings {
         return pad(filler, maxLen, source, false);
     }
 
+    /**
+     * Returns the leftmost len characters of a String. The method is null-safe.
+     * 
+     * @param source
+     *            Source String. May be null.
+     * @param len
+     *            Number of characters to retrieve from left. Must be &gt;= 0.
+     * @return
+     */
+    public static String left(final String source, final int len) {
+
+        Preconditions.checkArgument(len >= 0, "len must be >= 0.");
+
+        if (source != null && source.length() > len) {
+            return source.substring(0, len);
+        } else {
+            return source;
+        }
+    }
+
+    /**
+     * Returns the rightmost len characters of a String. The method is null-safe.
+     * 
+     * @param source
+     *            Source String. May be null.
+     * @param len
+     *            Number of characters to retrieve from right. Must be &gt;= 0.
+     * @return
+     */
+    public static String right(final String source, final int len) {
+
+        Preconditions.checkArgument(len >= 0, "len must be >= 0.");
+
+        if (source != null && source.length() > len) {
+            return source.substring(source.length() - len);
+        } else {
+            return source;
+        }
+    }
+
 }

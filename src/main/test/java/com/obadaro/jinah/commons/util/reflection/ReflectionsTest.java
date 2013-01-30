@@ -69,10 +69,10 @@ public class ReflectionsTest {
     @SuppressWarnings("unchecked")
     public void fFindFieldsByAnnotation() {
 
-        Class<?>[] annotations = new Class<?>[]{Id.class, EmbeddedId.class};
+        Class<?>[] annotations = new Class<?>[] { Id.class, EmbeddedId.class };
 
         FieldAccess[] fa =
-                Reflections.findFieldsByAnnotation(AnyData.class, (Class<? extends Annotation>[]) annotations);
+            Reflections.findFieldsByAnnotation(AnyData.class, (Class<? extends Annotation>[]) annotations);
 
         Assert.assertTrue(fa != null);
         Assert.assertTrue(fa.length == 2);
@@ -133,7 +133,7 @@ public class ReflectionsTest {
         Assert.assertTrue(data.isActive() == active);
 
         fa.set(data, false);
-        Assert.assertTrue(false == data.isActive());
+        Assert.assertTrue(!data.isActive());
     }
 
     @Test(expected = Exception.class)
@@ -149,7 +149,7 @@ public class ReflectionsTest {
         Assert.assertTrue(data.isActive() == active);
 
         fa.set(data, false);
-        Assert.assertTrue(false == data.isActive());
+        Assert.assertTrue(!data.isActive());
     }
 
     @Test(expected = IllegalArgumentException.class)

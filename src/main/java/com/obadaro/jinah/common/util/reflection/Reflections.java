@@ -67,6 +67,32 @@ public class Reflections {
                                                        Class<?> stopClass,
                                                        final Class<? extends Annotation>[] annotations) {
 
+        return findFieldsByAnnotation(clazz, stopClass, true, annotations);
+    }
+
+    /**
+     * Retrieves the fields that have the provided {@code annotations}. Also
+     * searches in the superclasses.
+     * <p>
+     * The {@code directAccess} parameter defines how the {@link FieldAccess} will be constructed.
+     * </p>
+     * 
+     * @param clazz
+     *            Class where to search.
+     * @param stopClass
+     *            Limit to search on ascendant hierarchy.
+     * @param directAccess
+     *            Indicates whether the actions of read / write must be made directly in the field
+     *            or through access methods.
+     * @param annotations
+     *            One or more annotations to search
+     * @return {@link FieldAccess} array with found fields.
+     */
+    public static FieldAccess[] findFieldsByAnnotation(final Class<?> clazz,
+                                                       Class<?> stopClass,
+                                                       final boolean directAccess,
+                                                       final Class<? extends Annotation>[] annotations) {
+
         Preconditions.checkArgument(clazz != null, "clazz");
         Preconditions.checkArgument(annotations != null && annotations.length > 0, "annotations");
 
@@ -84,7 +110,7 @@ public class Reflections {
             for (final Field f : fields) {
                 for (final Class<? extends Annotation> a : annotations) {
                     if (f.isAnnotationPresent(a)) {
-                        l.add(new FieldAccess(clazz, f));
+                        l.add(new FieldAccess(clazz, f, directAccess));
                         break;
                     }
                 }
@@ -172,9 +198,7 @@ public class Reflections {
 
         } catch (final Exception e) {
             throw new JinahException(String.format("Class.newInstance() failed for class '%s'. Message: %s",
-                clazz,
-                e.getMessage()),
-                e);
+                clazz, e.getMessage()), e);
         }
     }
 
@@ -190,9 +214,7 @@ public class Reflections {
      *            arguments, inform {@code new Class<?>[0]}.
      * @return Found method, or {@code null} if method not found.
      */
-    public static Method findMethod(final Class<?> clazz,
-                                    final String methodName,
-                                    final Class<?>... args) {
+    public static Method findMethod(final Class<?> clazz, final String methodName, final Class<?>... args) {
 
         return findMethod(clazz, null, methodName, args);
     }
@@ -268,8 +290,31 @@ public class Reflections {
      *            Field names to search.
      * @return Found fields. If no fields found, returns an empty array.
      */
+    public static FieldAccess[] findFields(final Class<?> clazz, Class<?> stopClass, final String[] names) {
+
+        return findFields(clazz, stopClass, true, names);
+    }
+
+    /**
+     * Retrieves the fields that have the provided names. Also searches in the superclasses.
+     * <p>
+     * The {@code directAccess} parameter defines how the {@link FieldAccess} will be constructed.
+     * </p>
+     * 
+     * @param clazz
+     *            Class where to search.
+     * @param stopClass
+     *            Field names to search.
+     * @param directAccess
+     *            Indicates whether the actions of read / write must be made directly in the field
+     *            or through access methods.
+     * @param names
+     *            Field names to search.
+     * @return Found fields. If no fields found, returns an empty array.
+     */
     public static FieldAccess[] findFields(final Class<?> clazz,
                                            Class<?> stopClass,
+                                           final boolean directAccess,
                                            final String[] names) {
 
         Preconditions.checkArgument(clazz != null, "clazz");
@@ -286,7 +331,7 @@ public class Reflections {
             while (cls != null) {
                 try {
                     final Field field = cls.getDeclaredField(nome);
-                    l.add(new FieldAccess(clazz, field));
+                    l.add(new FieldAccess(clazz, field, directAccess));
                     break;
                 } catch (final NoSuchFieldException e) {
                     if (!cls.equals(stopClass)) {
@@ -318,6 +363,32 @@ public class Reflections {
                                                      Class<?> stopClass,
                                                      final Class<?> classOrInterface) {
 
+        return findCompatibleFields(clazz, stopClass, classOrInterface, true);
+    }
+
+    /**
+     * Returns the fields where type is compatible with {@code classOrInterface}. Also searches in
+     * the superclasses.
+     * <p>
+     * The {@code directAccess} parameter defines how the {@link FieldAccess} will be constructed.
+     * </p>
+     * 
+     * @param clazz
+     *            Class where to search.
+     * @param stopClass
+     *            Limit to search on ascendant hierarchy.
+     * @param classOrInterface
+     *            Class or Interface to compare.
+     * @param directAccess
+     *            Indicates whether the actions of read / write must be made directly in the field
+     *            or through access methods.
+     * @return Found fields. If no fields found, returns an empty array.
+     */
+    public static FieldAccess[] findCompatibleFields(final Class<?> clazz,
+                                                     Class<?> stopClass,
+                                                     final Class<?> classOrInterface,
+                                                     final boolean directAccess) {
+
         Preconditions.checkArgument(clazz != null, "clazz");
         Preconditions.checkArgument(classOrInterface != null, "classOrInterface");
 
@@ -332,7 +403,7 @@ public class Reflections {
             final Field[] fields = cls.getDeclaredFields();
             for (final Field field : fields) {
                 if (classOrInterface.isAssignableFrom(field.getType())) {
-                    l.add(new FieldAccess(clazz, field));
+                    l.add(new FieldAccess(clazz, field, directAccess));
                 }
             }
 

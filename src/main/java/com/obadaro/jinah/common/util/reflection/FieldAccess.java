@@ -101,6 +101,13 @@ public class FieldAccess {
                         "Accessor methods (get|is/set) not found for '%s' on class '%s'.", field.getName(),
                         owner.getName()));
                 }
+
+                if (!setter.isAccessible()) {
+                    setter.setAccessible(true);
+                }
+                if (!getter.isAccessible()) {
+                    getter.setAccessible(true);
+                }
             }
         } catch (final Exception e) {
             throw new JinahException(String.format("Error building FieldAccess for '%s' from class '%s'.",
@@ -117,13 +124,13 @@ public class FieldAccess {
     public String toString() {
 
         return new StringBuilder("FieldAccess[field=").append(field.getName())
-                .append("][type=")
-                .append(field.getType().getName())
-                .append("]")
-                .append("][owner=")
-                .append(owner.getName())
-                .append("]")
-                .toString();
+            .append("][type=")
+            .append(field.getType().getName())
+            .append(']')
+            .append("][owner=")
+            .append(owner.getName())
+            .append(']')
+            .toString();
     }
 
     /**

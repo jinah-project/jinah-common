@@ -60,8 +60,7 @@ public class Dates {
     protected static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getDefault();
 
     static final ThreadLocal<Map<String, WeakReference<SimpleDateFormat>>> SDF_CACHE =
-            new ThreadLocal<Map<String, WeakReference<SimpleDateFormat>>>();
-
+        new ThreadLocal<Map<String, WeakReference<SimpleDateFormat>>>();
 
     /**
      * Returns a calendar using the default time zone and locale.
@@ -71,6 +70,19 @@ public class Dates {
     public static Calendar calendar() {
 
         return Calendar.getInstance();
+    }
+
+    /**
+     * Returns a calendar using the default time zone and locale.
+     * 
+     * @param clearTime
+     *            If {@code true}, Clears the time portion of the Calendar.
+     * 
+     * @return
+     */
+    public static Calendar calendar(boolean clearTime) {
+
+        return clearTime(Calendar.getInstance());
     }
 
     /**
@@ -234,16 +246,55 @@ public class Dates {
         return c.getTime();
     }
 
+    /**
+     * Verifies if {@code date} is between dates "a" and "b", inclusive.
+     * 
+     * @param a
+     *            Start date.
+     * @param b
+     *            End date.
+     * @param date
+     *            Date to check if is between "a" and "b", inclusive.
+     * @return {@code true} if {@code date} is between date "a" and "b", inclusive.
+     */
     public static boolean isBetween(final Date a, final Date b, final Date date) {
 
         return isBetween(a, b, date, false);
     }
 
+    /**
+     * Verifies if {@code date} is between dates "a" and "b", inclusive.
+     * 
+     * @param a
+     *            Start date.
+     * @param b
+     *            End date.
+     * @param date
+     *            Date to check if is between "a" and "b", inclusive.
+     * @param clearTime
+     *            Clears the time portion of the Dates.
+     * @return {@code true} if {@code date} is between date "a" and "b", inclusive.
+     */
     public static boolean isBetween(Date a, Date b, Date date, final boolean clearTime) {
 
         return isBetween(a, b, date, clearTime, DEFAULT_TIME_ZONE, DEFAULT_LOCALE);
     }
 
+    /**
+     * Verifies if {@code date} is between dates "a" and "b", inclusive.
+     * 
+     * @param a
+     *            Start date.
+     * @param b
+     *            End date.
+     * @param date
+     *            Date to check if is between "a" and "b", inclusive.
+     * @param clearTime
+     *            Clears the time portion of the Dates.
+     * @param timeZone
+     * @param locale
+     * @return {@code true} if {@code date} is between date "a" and "b", inclusive.
+     */
     public static boolean isBetween(Date a,
                                     Date b,
                                     Date date,

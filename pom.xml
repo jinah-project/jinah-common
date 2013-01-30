@@ -9,7 +9,7 @@
 	</parent>
 	
 	<artifactId>jinah-common</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<name>JINAH Common lib</name>
 	
 	<url>http://www.obadaro.com/jinah/jinah-common</url>

@@ -44,4 +44,20 @@ public class StringsTest {
         Assert.assertTrue((target + "0000").equals(Strings.rightPad('0', 9, target)));
     }
 
+    @Test
+    public void tLeftRight() {
+
+        final String source = "abcDefgh";
+
+        Assert.assertTrue("abc".equals(Strings.left(source, 3)));
+        Assert.assertTrue("".equals(Strings.left(source, 0)));
+        Assert.assertTrue(source.equals(Strings.left(source, 10)));
+        Assert.assertTrue(null == Strings.left(null, 2));
+
+        Assert.assertTrue("Defgh".equals(Strings.right(source, 5)));
+        Assert.assertTrue("".equals(Strings.right(source, 0)));
+        Assert.assertTrue(source.equals(Strings.right(source, 10)));
+        Assert.assertTrue(null == Strings.right(null, 2));
+    }
+
 }
